@@ -21,8 +21,14 @@ def run(playwright: Playwright) -> None:
     page.wait_for_load_state("networkidle")
     expect(page.get_by_role("button", name="Log In")).to_be_hidden()
     page.get_by_role('link', name='Home').click()
+
     product = page.get_by_text('$85').first.locator('xpath=../../../../..').locator('h3').text_content()
     assert product == "Shoes"
+
+    all_links = page.get_by_role("link").all()
+    for link in all_links:
+        if '$85' in link.text_content():
+            assert 'socks' not in link.text_content().lower()
     print("My first playwright test")
 
 
@@ -33,3 +39,4 @@ def run(playwright: Playwright) -> None:
 
 with sync_playwright() as playwright:
     run(playwright)
+
