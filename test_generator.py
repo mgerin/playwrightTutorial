@@ -19,7 +19,11 @@ def run(playwright: Playwright) -> None:
     # page.pause()
     page.wait_for_load_state("networkidle")
     expect(page.get_by_role("button", name="Log In")).to_be_hidden()
+    page.get_by_role('link', name='Home').click()
+    product = page.get_by_text('$85').first.locator('xpath=../../../../..').locator('h3').text_content()
+    assert product == "Shoes"
     print("My first playwright test")
+
 
     # ---------------------
     context.close()
